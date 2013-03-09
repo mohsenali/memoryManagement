@@ -6,6 +6,7 @@ memManager::memManager(void){
 	//clean the memory
 	memset((void *) memNext, 100000, maxMem*sizeof(uint32_t));
 	curFreeLoc			  = 0;
+	//intialize the whole memory as one free block
 	memInfoUsed[0]		  = FREE; 
 	memNext[0]		  =  maxMem-1; 
 	memInfoUsed[maxMem-1] = FREE;
@@ -45,6 +46,7 @@ void *memManager::findNext(size_t size){
 	char flag = 0;
 	uint32_t tempLoc = 0;
 	tempLoc = curFreeLoc;
+	//check the top first
 	if(memInfoUsed[tempLoc]==FREE && ((memNext[tempLoc]-tempLoc+1) > size)){//if the memory is avialable and object fits in 
 		flag = 1;
 	}
@@ -77,6 +79,7 @@ void memManager::setUpMem(uint32_t tempLoc, size_t size, char setWhat){
 		memInfoUsed[tempLoc] = USED;
 		memInfoUsed[tempLoc+size-1] = USED;				
 		this->memAvail = memAvail-size;
+		//if allocated block is smaller than the current block, break it
 		if( (tempLoc+size-1) != temp){
 			memNext[tempLoc+size] = temp;
 			memNext[temp]		  = tempLoc+size;
@@ -94,6 +97,7 @@ void memManager::setUpMem(uint32_t tempLoc, size_t size, char setWhat){
 };//end of setupMem
 
 void memManager::mregeUp(uint32_t tempLoc){
+	//check the next block and if it is free merge it
 	uint32_t temp1			= memNext[tempLoc];
 	if(temp1+1< maxMem && memInfoUsed[temp1+1] == FREE){
 		memNext[tempLoc] = memNext[temp1+1];

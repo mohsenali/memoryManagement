@@ -13,10 +13,18 @@ void main(void){
 	strcpy(abc4, "CD");
 	std::cout <<endl << "CURRENT meory contents are as follow" <<endl;
 	mem.printMem();
-	std::cout <<endl << "Deleting 2nd allocation" <<endl;
-	mem.free(abc2);
 	std::cout <<endl << "Deleting 3rd allocation" <<endl;
 	mem.free(abc3);
+	char *abc6 = (char *)mem.memalloc(10);
+	if(abc6!=NULL){
+		strcpy(abc6, "*What In** ");
+	}
+	std::cout <<endl << "CURRENT meory contents are as follow" <<endl;
+	mem.printMem();
+
+	std::cout <<endl << "Deleting 2nd allocation" <<endl;
+	mem.free(abc2);
+	
 	std::cout <<endl << "Following cannot be allocated if the previous two free mem are not merged" <<endl;
 	
 	char *abc5 = (char *)mem.memalloc(15);
